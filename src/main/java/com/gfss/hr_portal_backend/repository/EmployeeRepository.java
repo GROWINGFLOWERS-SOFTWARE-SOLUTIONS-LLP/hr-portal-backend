@@ -1,7 +1,8 @@
 package com.gfss.hr_portal_backend.repository;
  
 import java.util.List;
- 
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import com.gfss.hr_portal_backend.entity.EmployeeEntity;
@@ -14,4 +15,8 @@ public interface EmployeeRepository extends MongoRepository<EmployeeEntity, Stri
 	EmployeeEntity findByEmailId(String emailId);
 	// To find Role
 	List<EmployeeEntity> findByRole(String role);
+	
+	 Optional<EmployeeEntity> findByFirstNameAndLastName(String firstName, String lastName);
+	   
+
 }
