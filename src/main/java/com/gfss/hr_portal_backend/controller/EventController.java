@@ -1,66 +1,60 @@
 package com.gfss.hr_portal_backend.controller;
 
-import com.gfss.hr_portal_backend.entity.Event;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.*;
+import com.gfss.hr_portal_backend.entity.EventEntity;
+import com.gfss.hr_portal_backend.resultVO.ApiResponse;
+import com.gfss.hr_portal_backend.resultVO.EventRequest;
+import com.gfss.hr_portal_backend.service.EventService;
+
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/api")
 public class EventController {
 
-    private final Map<String, Event> dummyEventStore = new HashMap<>();
+    @Autowired
+    private EventService eventService;
 
-    public EventController() {
-        // Dummy sample event
-        String id = UUID.randomUUID().toString();
-        dummyEventStore.put(id, new Event(
-                id,
-                "Tech Conference",
-                "A conference on latest tech trends.",
-                LocalDate.of(2025, 7, 15),
-                "Bangalore",
-                "TechOrg"
-        ));
+    @PostMapping("/events")
+    public ResponseEntity<ApiResponse<EventEntity>> createEvent(@Valid @RequestBody EventRequest request) {
+        EventEntity event = eventService.addEvent(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>("Success", "Event Created", event));
     }
 
-    @GetMapping
-    public List<Event> getAllEvents() {
-        return new ArrayList<>(dummyEventStore.values());
+    @PutMapping("/events/{eventId}")
+    public ResponseEntity<ApiResponse<EventEntity>> updateEvent(@PathVariable String eventId,
+            @Valid @RequestBody EventRequest request) {
+        EventEntity updated = eventService.updateEvent(eventId, request);
+        return ResponseEntity.ok(new ApiResponse<>("Success", "Event Updated", updated));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable String id) {
-        Event event = dummyEventStore.get(id);
-        return (event != null) ? ResponseEntity.ok(event) : ResponseEntity.notFound().build();
+    @DeleteMapping("/events/{eventId}")
+    public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable String eventId) {
+        eventService.deleteEvent(eventId);
+        return ResponseEntity.ok(new ApiResponse<>("Success", "Event Deleted", null));
     }
 
-    @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        String id = UUID.randomUUID().toString();
-        event.setId(id);
-        dummyEventStore.put(id, event);
-        return ResponseEntity.ok(event);
+    @GetMapping("/events/{eventId}")
+    public ResponseEntity<ApiResponse<EventEntity>> getEventById(@PathVariable String eventId) {
+        EventEntity event = eventService.getEventByEventId(eventId);
+        return ResponseEntity.ok(new ApiResponse<>("Success", "Event Retrieved", event));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable String id, @RequestBody Event event) {
-        if (!dummyEventStore.containsKey(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        event.setId(id);
-        dummyEventStore.put(id, event);
-        return ResponseEntity.ok(event);
+    @GetMapping("/events")
+    public ResponseEntity<ApiResponse<List<EventEntity>>> getAllEvents() {
+        List<EventEntity> events = eventService.getAllEvents();
+        return ResponseEntity.ok(new ApiResponse<>("Success", "All Events", events));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable String id) {
-        if (dummyEventStore.remove(id) != null) {
-            return ResponseEntity.ok("Event deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/events/search")
+    public ResponseEntity<ApiResponse<List<EventEntity>>> searchByTitle(@RequestParam String title) {
+        List<EventEntity> events = eventService.searchEventByTitle(title);
+        return ResponseEntity.ok(new ApiResponse<>("Success", "Filtered Events", events));
     }
 }
