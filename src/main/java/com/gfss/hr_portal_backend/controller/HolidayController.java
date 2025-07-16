@@ -13,6 +13,7 @@ import com.gfss.hr_portal_backend.service.HolidayService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class HolidayController {
