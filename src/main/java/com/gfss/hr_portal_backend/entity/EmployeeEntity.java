@@ -1,12 +1,10 @@
 package com.gfss.hr_portal_backend.entity;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,31 +15,32 @@ import lombok.NoArgsConstructor;
 @Document(collection = "Employee")
 public class EmployeeEntity {
  
-    @Id
+	@Id
+	private String id; // MongoDB's _id (ObjectId as String)
 
-	private String empId;
- 
-    private String firstName;
-    
-    private String lastName;
-    
-    private String department;
-    
-    private String manager;
- 
-    private String mobile;
- 
-    @Email(message = "EmailId should be a valid email address")
-    private String emailId;
-    private String password;
-    private String oldpassword;
-    private String role;
-    private String joiningDate;
-    private String address;
- 
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    
+	private String empId;  // Custom ID (used for CRUD)
+
+	private String firstName;
+	private String lastName;
+	private String department;
+	private String manager;
+	private String mobile;
+	private String emailId;
+	private String password;
+	private String oldpassword;
+	private String role;
+	private String joiningDate;
+	private String address;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
+	private String createdBy;
+	private String modifiedBy;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getEmpId() {
 		return empId;
 	}
@@ -126,6 +125,27 @@ public class EmployeeEntity {
 	public void setModifiedDate(LocalDateTime modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	@Override
+	public String toString() {
+		return "EmployeeEntity [id=" + id + ", empId=" + empId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", department=" + department + ", manager=" + manager + ", mobile=" + mobile + ", emailId=" + emailId
+				+ ", password=" + password + ", oldpassword=" + oldpassword + ", role=" + role + ", joiningDate="
+				+ joiningDate + ", address=" + address + ", createdDate=" + createdDate + ", modifiedDate="
+				+ modifiedDate + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + "]";
+	}
+    
 	
 	
 }
