@@ -17,6 +17,4 @@ public interface EmployeeRepository extends MongoRepository<EmployeeEntity, Stri
 	List<EmployeeEntity> findByRole(String role);
 	
 	 Optional<EmployeeEntity> findByFirstNameAndLastName(String firstName, String lastName);
-	   
-
 }
