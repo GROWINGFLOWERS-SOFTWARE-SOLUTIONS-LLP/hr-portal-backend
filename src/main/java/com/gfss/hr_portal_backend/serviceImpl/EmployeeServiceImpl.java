@@ -122,5 +122,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 				emp.getAddress()
 				);
 	}
-
+	
+	@Override
+    public long countEmployees() {
+        return employeeRepository.count();
+    }
 }

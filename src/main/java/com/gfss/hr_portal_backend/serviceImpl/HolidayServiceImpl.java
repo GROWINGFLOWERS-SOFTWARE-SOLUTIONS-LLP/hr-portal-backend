@@ -1,13 +1,16 @@
 package com.gfss.hr_portal_backend.serviceImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gfss.hr_portal_backend.entity.HolidayEntity;
 import com.gfss.hr_portal_backend.repository.HolidayRepository;
+import com.gfss.hr_portal_backend.resultVO.HolidayCalenderDTO;
 import com.gfss.hr_portal_backend.resultVO.HolidayRequest;
 import com.gfss.hr_portal_backend.service.HolidayService;
 
@@ -52,6 +55,15 @@ public class HolidayServiceImpl implements HolidayService {
             return holidayRepository.save(holiday);
         }
         return null;
+    }
+    
+    @Override
+    public List<HolidayCalenderDTO> getNext4HolidayDTOs() {
+        LocalDate today = LocalDate.now();
+        List<HolidayEntity> holidays = holidayRepository.findTop4ByDateAfter(today);
+        return holidays.stream()
+                .map(h -> new HolidayCalenderDTO(h.getHolidayName(), h.getDate()))
+                .collect(Collectors.toList());
     }
 
     @Override

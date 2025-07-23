@@ -12,6 +12,8 @@ public interface ResignationService
 
     List<Resignation> getAllResignations();
     
+    long countResignations();
+    
     Resignation getResignationByRegId(String regId);
 
     Optional<Resignation> getResignationById(String id);

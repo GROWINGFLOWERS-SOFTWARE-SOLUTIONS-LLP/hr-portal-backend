@@ -78,6 +78,11 @@ public class ResignationServiceImpl implements ResignationService
     }
     
     @Override
+    public long countResignations() {
+        return resignationRepository.count();
+    }
+    
+    @Override
     public List<Resignation> getAllResignations() {
         return resignationRepository.findAll();
     }

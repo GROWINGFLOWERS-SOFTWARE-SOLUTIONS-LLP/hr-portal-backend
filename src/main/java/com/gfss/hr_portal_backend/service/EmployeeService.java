@@ -16,7 +16,7 @@ public interface EmployeeService {
 	
 	List<EmployeeEntity> getEmployeesByRole(String role);
 	
-	
+	long countEmployees();
 	ProfileResponse getMyProfile(String empId);
 	
 }
