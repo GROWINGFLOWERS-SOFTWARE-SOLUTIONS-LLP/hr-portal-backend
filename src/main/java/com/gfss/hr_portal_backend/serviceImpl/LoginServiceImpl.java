@@ -13,10 +13,13 @@ public class LoginServiceImpl implements LoginService{
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
-    @Override
-    public EmployeeEntity login(String emailId) {
-        return employeeRepository.findByEmailId(emailId);
-    }
-
+	@Override
+	public EmployeeEntity login(String email, String password) {
+	    EmployeeEntity employee = employeeRepository.findByEmailId(email);
+	    if (employee != null && employee.getPassword().equals(password)) {
+	        return employee;
+	    }
+	    return null;
+	}
 	
 }

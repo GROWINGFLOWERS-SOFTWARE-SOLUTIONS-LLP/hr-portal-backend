@@ -18,34 +18,44 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
-    @Override
-    public EmployeeEntity addEmployee(EmployeeRequest request) {
-        EmployeeEntity employee = new EmployeeEntity();
-        employee.setFirstName(request.getFirstName());
-        employee.setLastName(request.getLastName());
-        employee.setDepartment(request.getDepartment());
-        employee.setManager(request.getManager());
-        employee.setMobile(request.getMobile());
-        employee.setEmailId(request.getEmailId());
-        employee.setPassword(request.getPassword());
-        employee.setOldpassword(request.getOldpassword());
-        employee.setRole(request.getRole());
-        employee.setJoiningDate(request.getJoiningDate());
-        employee.setAddress(request.getAddress());
-        employee.setCreatedBy(request.getCreatedBy());
-        employee.setModifiedBy(request.getModifiedBy());
-        employee.setCreatedDate(LocalDateTime.now());
-        employee.setModifiedDate(LocalDateTime.now());
+	@Override
+	public EmployeeEntity addEmployee(EmployeeRequest request) {
+	    // 1. Validate role
+	    if (!request.getRole().equalsIgnoreCase("Employee") &&
+	        !request.getRole().equalsIgnoreCase("HR")) {
+	        throw new IllegalArgumentException("Role must be either 'Employee' or 'HR'");
+	    }
 
-        // Step 1: Insert to get MongoDB-generated _id
-        employee = employeeRepository.insert(employee);
+	    // 2. Check duplicate email
+	    if (employeeRepository.findByEmailId(request.getEmailId()) != null) {
+	        throw new IllegalArgumentException("Email already exists. Please use a different email.");
+	    }
 
-        // Step 2: Convert ObjectId to numeric string
-        employee.setEmpId(convertObjectIdToNumeric(employee.getId()));
+	    EmployeeEntity employee = new EmployeeEntity();
+	    employee.setFirstName(request.getFirstName());
+	    employee.setLastName(request.getLastName());
+	    employee.setDepartment(request.getDepartment());
+	    employee.setManager(request.getManager());
+	    employee.setMobile(request.getMobile());
+	    employee.setEmailId(request.getEmailId());
+	    employee.setPassword(request.getPassword()); // 🔒 In real projects, hash this
+	    employee.setOldpassword(request.getOldpassword());
+	    employee.setRole(request.getRole());
+	    employee.setJoiningDate(request.getJoiningDate());
+	    employee.setAddress(request.getAddress());
+	    employee.setCreatedBy(request.getCreatedBy());
+	    employee.setModifiedBy(request.getModifiedBy());
+	    employee.setCreatedDate(LocalDateTime.now());
+	    employee.setModifiedDate(LocalDateTime.now());
 
-        // Step 3: Save again with custom empId
-        return employeeRepository.save(employee);
-    }
+	    // Insert to get MongoDB ID
+	    employee = employeeRepository.insert(employee);
+
+	    // Generate custom empId
+	    employee.setEmpId(convertObjectIdToNumeric(employee.getId()));
+
+	    return employeeRepository.save(employee);
+	}
 
     @Override
     public EmployeeEntity updateEmployee(String empId, EmployeeRequest request) {
