@@ -27,17 +27,10 @@ public class LetterServiceImpl implements LetterService
 		this.employeeRepository = employeeRepository;
     }
     
-//    public LetterServiceImpl(EmployeeReository employeeRepository)
-//    {
-//    	this.employeeRepository=employeeRepository;
-//    }
-    
-//    public List<Letter> findByEmployeeName(String name) {
-//        return letterRepository.findByEmployeeName(name);
-//    }
+
 
     @Override
-    public Letter savePdf(String employeeName, String letterType, MultipartFile file) throws IOException {
+    public Letter saveLetter(String employeeName, String letterType, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File is required");
         }
@@ -69,12 +62,11 @@ public class LetterServiceImpl implements LetterService
         Letter letter = new Letter();
         letter.setEmpId(employee.getEmpId());
         letter.setEmpName(empname);
-//        letter.setEmployeeId(employee.getEmployeeId());  // use ID
         letter.setLetterType(letterType);
         letter.setFileName(file.getOriginalFilename());
         letter.setUploadDate(LocalDate.now());
         letter.setFileData(file.getBytes());
-     // Step 1: Insert to get MongoDB-generated _id
+       // Step 1: Insert to get MongoDB-generated _id
         letter = letterRepository.insert(letter);
  
         // Step 2: Convert ObjectId to numeric string
@@ -99,52 +91,16 @@ public class LetterServiceImpl implements LetterService
         }
         return numericId.toString();
     }
-//    @Override
-//    public List<LetterResponseDTO> getAllLetters() {
-//        List<Letter> letters = letterRepository.findAll();
-//
-//        return letters.stream().map(letter -> {
-//        	EmployeeEntity emp = employeeRepository.findByEmployeeId(letter.getEmployeeId())
-//        		    .orElseThrow(() -> new IllegalArgumentException("Employee not found with ID: " + letter.getEmployeeId()));
-//            String fullName = emp != null ? emp.getFirstName() + " " + emp.getLastName() : "Unknown";
-//
-//            LetterResponseDTO dto = new LetterResponseDTO();
-//            dto.setEmployeeName(fullName);
-//            dto.setLetterType(letter.getLetterType());
-//            dto.setFileName(letter.getFileName());
-//            dto.setUploadDate(letter.getUploadDate());
-//            return dto;
-//        }).collect(Collectors.toList());
-//    }
+
 
     
-//    
-//    @Override
-//    public Letter savePdf(String employeeName, String letterType, MultipartFile file) throws Exception {
-//        if (!"application/pdf".equalsIgnoreCase(file.getContentType())) {
-//            throw new IllegalArgumentException("Only PDF files are allowed");
-//        }
-//
-//        Letter letter = new Letter();
-////        letter.setEmployeeName(employeeName);
-//        letter.setLetterType(letterType);
-//        letter.setFileName(file.getOriginalFilename());
-//        letter.setFileData(file.getBytes());
-//        letter.setUploadDate(LocalDate.now());
-//
-//        return letterRepository.save(letter);
-//    }
+
 
     @Override
     public List<Letter> getAllLetters() {
         return letterRepository.findAll();
     }
 
-//    @Override
-//    public Letter getLetterById(String id) throws Exception {
-//        return letterRepository.findById(id)
-//                .orElseThrow(() -> new Exception("Letter not found with id: " + id));
-//    }
 
     @Override
     public Letter updateLetter(String id, String employeeName, String letterType, MultipartFile file) throws Exception {
@@ -178,8 +134,7 @@ public class LetterServiceImpl implements LetterService
 
         return false;
     	
-//        Letter existing = getLetterById(id);
-//        letterRepository.delete(existing);
+
     }
 
     @Override

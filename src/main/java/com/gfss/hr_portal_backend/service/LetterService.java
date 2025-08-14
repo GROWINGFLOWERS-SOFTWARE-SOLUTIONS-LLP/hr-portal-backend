@@ -11,7 +11,7 @@ public interface LetterService
 {
 	 
 	
-	    Letter savePdf(String employeeName, String letterType, MultipartFile file) throws Exception;
+	    Letter saveLetter(String employeeName, String letterType, MultipartFile file) throws Exception;
 	    
 	    Letter getLetterByLetterId(String letterId);
 	   
