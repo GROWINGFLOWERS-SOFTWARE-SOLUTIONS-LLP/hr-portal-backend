@@ -20,7 +20,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<EmployeeEntity>> login(
             @RequestParam String email,
             @RequestParam String password) {
