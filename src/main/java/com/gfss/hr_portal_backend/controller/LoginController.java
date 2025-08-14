@@ -1,7 +1,6 @@
 package com.gfss.hr_portal_backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,8 +8,6 @@ import com.gfss.hr_portal_backend.entity.EmployeeEntity;
 import com.gfss.hr_portal_backend.resultVO.ApiResponse;
 import com.gfss.hr_portal_backend.resultVO.LoginRequest;
 import com.gfss.hr_portal_backend.service.LoginService;
-
-import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -21,26 +18,21 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<?>> login(@Valid @RequestBody LoginRequest login) {
-        try {
-            EmployeeEntity employee = loginService.login(login.getEmail());
+    public ResponseEntity<ApiResponse<EmployeeEntity>> login(@RequestBody LoginRequest request) {
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
 
-            if (employee == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new ApiResponse<>("error", "Invalid Email ID", null));
-            }
+        EmployeeEntity emp = loginService.login(request.getEmail(), request.getPassword());
 
-            if (!employee.getPassword().equals(login.getPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new ApiResponse<>("error", "Invalid Password", null));
-            }
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ApiResponse<>("success", "Login Successful", employee));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("error", "An error occurred: " + e.getMessage(), null));
+        if (emp != null) {
+            return ResponseEntity.ok(
+                new ApiResponse<>("success", "Login successful", emp)
+            );
         }
+
+        return ResponseEntity.status(401).body(
+            new ApiResponse<>("error", "Invalid email or password", null)
+        );
     }
+
 }

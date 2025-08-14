@@ -4,5 +4,6 @@ import com.gfss.hr_portal_backend.entity.EmployeeEntity;
 
 public interface LoginService {
 
-	EmployeeEntity login(String emailId);
+	EmployeeEntity login(String email, String password);
+
 }
