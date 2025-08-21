@@ -9,6 +9,7 @@ import com.gfss.hr_portal_backend.resultVO.MeetingRequest;
 import com.gfss.hr_portal_backend.entity.MeetingEntity;
 import com.gfss.hr_portal_backend.repository.MeetingRepository;
 import com.gfss.hr_portal_backend.service.MeetingService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class MeetingServiceImpl implements MeetingService {
@@ -16,18 +17,6 @@ public class MeetingServiceImpl implements MeetingService {
     @Autowired
     private MeetingRepository meetingRepository;
 
-    // Converts MongoDB ObjectId (hex string) to numeric-only string
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            if (Character.isDigit(ch)) {
-                numericId.append(ch);
-            } else if (Character.isLetter(ch)) {
-                numericId.append((int) ch);
-            }
-        }
-        return numericId.toString();
-    }
     @Override
     public MeetingEntity createMeeting(MeetingRequest request) {
         MeetingEntity entity = new MeetingEntity();
@@ -45,7 +34,7 @@ public class MeetingServiceImpl implements MeetingService {
         entity = meetingRepository.insert(entity);
 
         // Generate numeric meetingId
-        String customId = convertObjectIdToNumeric(entity.getId());
+        String customId = IdGenerateUtil.convertObjectIdToNumeric(entity.getId());
         entity.setMeetingId(customId);
 
         return meetingRepository.save(entity);

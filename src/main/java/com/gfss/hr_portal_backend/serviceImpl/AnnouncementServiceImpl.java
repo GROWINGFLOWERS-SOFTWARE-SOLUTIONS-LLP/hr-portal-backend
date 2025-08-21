@@ -10,6 +10,7 @@ import com.gfss.hr_portal_backend.entity.AnnouncementEntity;
 import com.gfss.hr_portal_backend.repository.AnnouncementRepository;
 import com.gfss.hr_portal_backend.resultVO.AnnouncementRequest;
 import com.gfss.hr_portal_backend.service.AnnouncementService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class AnnouncementServiceImpl implements AnnouncementService {
@@ -29,7 +30,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         entity = announcementRepository.insert(entity);
 
         // Step 2: Set announcementId using generated _id
-        entity.setAnnouncementId(convertObjectIdToNumeric(entity.getId()));
+        entity.setAnnouncementId(IdGenerateUtil.convertObjectIdToNumeric(entity.getId()));
 
         // Step 3: Save again with custom announcementId
         return announcementRepository.save(entity);
@@ -69,14 +70,5 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     @Override
     public List<AnnouncementEntity> searchAnnouncementsByTitle(String title) {
         return announcementRepository.findByTitleContainingIgnoreCase(title);
-    }
-
-    // Utility method to convert MongoDB ObjectId to numeric string
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            numericId.append((int) ch);
-        }
-        return numericId.toString();
     }
 }

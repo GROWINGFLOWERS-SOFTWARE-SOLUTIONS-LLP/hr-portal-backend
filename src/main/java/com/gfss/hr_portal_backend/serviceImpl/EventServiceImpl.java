@@ -10,20 +10,13 @@ import com.gfss.hr_portal_backend.entity.EventEntity;
 import com.gfss.hr_portal_backend.repository.EventRepository;
 import com.gfss.hr_portal_backend.resultVO.EventRequest;
 import com.gfss.hr_portal_backend.service.EventService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventRepository eventRepository;
-
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            numericId.append((int) ch);
-        }
-        return numericId.toString();
-    }
 
     @Override
     public EventEntity addEvent(EventRequest request) {
@@ -38,7 +31,7 @@ public class EventServiceImpl implements EventService {
         event = eventRepository.insert(event);
 
         // Step 2: Convert ObjectId to numeric string and set as eventId
-        event.setEventId(convertObjectIdToNumeric(event.getId()));
+        event.setEventId(IdGenerateUtil.convertObjectIdToNumeric(event.getId()));
 
         // Step 3: Save again with eventId
         return eventRepository.save(event);

@@ -19,20 +19,6 @@ public class ProfileResponse {
 	    private String joiningDate;
 	    private String address;
 	    
-	    
-		public ProfileResponse(String empId, String firstName, String lastName, String department, String role,
-				String mobile, String email, String joiningDate, String address) {
-			super();
-			this.empId = empId;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.department = department;
-			this.role = role;
-			this.mobile = mobile;
-			this.email = email;
-			this.joiningDate = joiningDate;
-			this.address = address;
-		}
 		public String getEmpId() {
 			return empId;
 		}

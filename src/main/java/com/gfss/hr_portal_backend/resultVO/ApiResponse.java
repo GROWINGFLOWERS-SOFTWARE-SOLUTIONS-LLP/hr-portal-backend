@@ -1,46 +1,56 @@
-/**
- * 
- */
 package com.gfss.hr_portal_backend.resultVO;
 
-/**
- * 
- */
 public class ApiResponse<T> {
 
-	private String status;
+    private String status;
     private String message;
     private T data;
-    
-    public ApiResponse(String status, String message,T data) {
+
+    public ApiResponse(String status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-	public String getStatus() {
-		return status;
-	}
+    // ---------- Static factory methods ----------
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>("success", "Request successful", data);
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public static <T> ApiResponse<T> success(String message, T data) {
+        return new ApiResponse<>("success", message, data);
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public static <T> ApiResponse<T> error(String message) {
+        return new ApiResponse<>("error", message, null);
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public static <T> ApiResponse<T> error(String message, T data) {
+        return new ApiResponse<>("error", message, data);
+    }
 
-	public T getData() {
-		return data;
-	}
+    // ---------- Getters & Setters ----------
+    public String getStatus() {
+        return status;
+    }
 
-	public void setData(T data) {
-		this.data = data;
-	}
-    
-    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

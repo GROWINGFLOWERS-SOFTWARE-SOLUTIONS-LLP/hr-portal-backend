@@ -12,6 +12,7 @@ import com.gfss.hr_portal_backend.repository.EmployeeRepository;
 import com.gfss.hr_portal_backend.repository.ResignationRepository;
 import com.gfss.hr_portal_backend.resultVO.ResignationRequest;
 import com.gfss.hr_portal_backend.service.ResignationService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class ResignationServiceImpl implements ResignationService 
@@ -52,23 +53,11 @@ public class ResignationServiceImpl implements ResignationService
         resignation1=resignationRepository.insert(resignation1);
         
      // Step 2: Convert ObjectId to numeric string
-        resignation1.setRegId(convertObjectIdToNumeric(resignation1.getId()));
+        resignation1.setRegId(IdGenerateUtil.convertObjectIdToNumeric(resignation1.getId()));
         
         return resignationRepository.save(resignation1);
     }
- // Converts MongoDB ObjectId (hex string) to numeric-only string
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            if (Character.isDigit(ch)) {
-                numericId.append(ch);
-            } else if (Character.isLetter(ch)) {
-                numericId.append((int) ch);
-            }
-        }
-        return numericId.toString();
-    }
-    
+ 
     @Override
 
     public Resignation getResignationByRegId(String regId) {

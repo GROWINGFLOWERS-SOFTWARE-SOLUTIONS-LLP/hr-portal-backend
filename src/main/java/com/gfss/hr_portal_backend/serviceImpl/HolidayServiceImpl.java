@@ -13,20 +13,13 @@ import com.gfss.hr_portal_backend.repository.HolidayRepository;
 import com.gfss.hr_portal_backend.resultVO.HolidayCalenderDTO;
 import com.gfss.hr_portal_backend.resultVO.HolidayRequest;
 import com.gfss.hr_portal_backend.service.HolidayService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class HolidayServiceImpl implements HolidayService {
 
     @Autowired
     private HolidayRepository holidayRepository;
-
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            numericId.append((int) ch);
-        }
-        return numericId.toString();
-    }
 
     @Override
     public HolidayEntity addHoliday(HolidayRequest request) {
@@ -39,7 +32,7 @@ public class HolidayServiceImpl implements HolidayService {
         holiday = holidayRepository.insert(holiday);
 
         // Convert Mongo _id to numeric string and set as holidayId
-        holiday.setHolidayId(convertObjectIdToNumeric(holiday.getId()));
+        holiday.setHolidayId(IdGenerateUtil.convertObjectIdToNumeric(holiday.getId()));
 
         return holidayRepository.save(holiday);
     }
