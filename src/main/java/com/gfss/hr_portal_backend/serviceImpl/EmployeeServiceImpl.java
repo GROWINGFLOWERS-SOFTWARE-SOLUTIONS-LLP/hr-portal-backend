@@ -11,6 +11,7 @@ import com.gfss.hr_portal_backend.repository.EmployeeRepository;
 import com.gfss.hr_portal_backend.resultVO.EmployeeRequest;
 import com.gfss.hr_portal_backend.resultVO.ProfileResponse;
 import com.gfss.hr_portal_backend.service.EmployeeService;
+import com.gfss.hr_portal_backend.utils.IdGenerateUtil;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -52,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	    employee = employeeRepository.insert(employee);
 
 	    // Generate custom empId
-	    employee.setEmpId(convertObjectIdToNumeric(employee.getId()));
+	    employee.setEmpId(IdGenerateUtil.convertObjectIdToNumeric(employee.getId()));
 
 	    return employeeRepository.save(employee);
 	}
@@ -96,19 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public List<EmployeeEntity> getAllEmployees() {
         return employeeRepository.findAll();
-    }
-
-    // Converts MongoDB ObjectId (hex string) to numeric-only string
-    private String convertObjectIdToNumeric(String objectId) {
-        StringBuilder numericId = new StringBuilder();
-        for (char ch : objectId.toCharArray()) {
-            if (Character.isDigit(ch)) {
-                numericId.append(ch);
-            } else if (Character.isLetter(ch)) {
-                numericId.append((int) ch);
-            }
-        }
-        return numericId.toString();
     }
     
     @Override
