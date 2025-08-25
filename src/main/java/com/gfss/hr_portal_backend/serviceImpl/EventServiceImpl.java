@@ -24,8 +24,6 @@ public class EventServiceImpl implements EventService {
         event.setTitle(request.getTitle());
         event.setDescription(request.getDescription());
         event.setDate(request.getDate());
-        event.setLocation(request.getLocation());
-        event.setOrganizer(request.getOrganizer());
 
         // Step 1: Insert to generate MongoDB _id
         event = eventRepository.insert(event);
@@ -45,8 +43,7 @@ public class EventServiceImpl implements EventService {
             event.setTitle(request.getTitle());
             event.setDescription(request.getDescription());
             event.setDate(request.getDate());
-            event.setLocation(request.getLocation());
-            event.setOrganizer(request.getOrganizer());
+            
             return eventRepository.save(event);
         }
         return null;

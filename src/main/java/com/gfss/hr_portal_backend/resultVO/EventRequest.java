@@ -16,12 +16,6 @@ public class EventRequest {
     @NotNull(message = "Date is required.")
     private LocalDate date;
 
-    @NotBlank(message = "Location is required.")
-    private String location;
-
-    @NotBlank(message = "Organizer is required.")
-    private String organizer;
-
 	public String getTitle() {
 		return title;
 	}
@@ -44,21 +38,5 @@ public class EventRequest {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public String getOrganizer() {
-		return organizer;
-	}
-
-	public void setOrganizer(String organizer) {
-		this.organizer = organizer;
 	}
 }

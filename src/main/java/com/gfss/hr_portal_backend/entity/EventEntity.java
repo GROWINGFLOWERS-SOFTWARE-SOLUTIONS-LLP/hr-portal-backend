@@ -22,9 +22,7 @@ public class EventEntity {
     private String title;
     private String description;
     private LocalDate date;
-    private String location;
-    private String organizer;
-	public String getId() {
+    public String getId() {
 		return id;
 	}
 	public void setId(String id) {
@@ -54,16 +52,5 @@ public class EventEntity {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	public String getOrganizer() {
-		return organizer;
-	}
-	public void setOrganizer(String organizer) {
-		this.organizer = organizer;
-	}
+	
 }
